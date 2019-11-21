@@ -1,0 +1,45 @@
+Access Key ID:
+AKIAJDJF453MKDENP2BA
+Secret Access Key:
+BjB+LsESJ8IXsTlfpxdd8/74YVVycUZMOQxWJkvD
+
+region: ap-south-1
+ami-0ce933e2ae91880d3   ami id
+-----------------------------------------------------------------------------------------------------------------
+provider "aws" { 
+  access_key = "AKIAI6DQZ3SZFSL3CQOA"
+  secret_key = "971gB0ts0lsLukf9Ms+KVjj2g/y9j8ylotZRraQU"
+  region = "ap-south-1"
+}
+
+resource "aws_instance" "terraform_example" {
+  ami = "ami-0ce933e2ae91880d3"
+  instance_type = "t2.micro"
+key_name = "terraformkey"
+
+provisioner "file" {
+    source = "myscript.sh"
+    destination = "/tmp/myscript.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod 777 /tmp/myscript.sh ",
+"sudo sh /tmp/myscript.sh",
+    ]
+  }
+  
+  connection {
+host = "${self.public_ip}"
+    user = "ec2-user}"
+    private_key = "${file("${var.terraform.pem}")}"
+  }
+}
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+}
+
